@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.5.0;
 
 contract Elections {
     address manager;
@@ -34,12 +34,12 @@ contract Elections {
         bytes32[] candidates;
     }
 
-    function Elections ()  {
+    constructor () public {
         manager = msg.sender;
         stage = 0;
     }
 
-    function addElection (bytes32[] UNIs) public onlyManager() onlyStage(0) {
+    function addElection (bytes32[] memory UNIs) public onlyManager() onlyStage(0) {
         Election storage election = elections[++electionsCount];
         election.UNIs = UNIs;
         for (uint i = 0; i < UNIs.length; i++) {
@@ -51,7 +51,7 @@ contract Elections {
         stage = 1;
     }
 
-    function vote (bytes32 voterEncryptedUNI, bytes32[] candidates) public onlyManager() onlyStage(1) {
+    function vote (bytes32 voterEncryptedUNI, bytes32[] memory candidates) public onlyManager() onlyStage(1) {
         require(candidates.length == electionsCount);
         require(!ballots[voterEncryptedUNI].exists);
 
